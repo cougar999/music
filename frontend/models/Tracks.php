@@ -92,7 +92,7 @@ class Tracks extends \yii\db\ActiveRecord
 
     public function getClicks($type = 'like')
     {
-        return $this->hasOne(Counter::className(), ['source_id'=>'id'])->where(['type' => $type, 'cate' => 'track', 'active' => 1]);
+        return $this->hasOne(Counter::className(), ['source_id'=>'id'])->where(['type' => $type, 'cate' => 'track']);
     }
 
 }

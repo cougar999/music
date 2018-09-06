@@ -13,6 +13,7 @@ $this->title = $title;
 $baseUrl = Url::base();
 
 $profile = isset($artist['profile']) ? $artist['profile'] : [];
+//var_dump($popSongsProvider->getModels());
 
 ?>
 <div class="producer-index">
