@@ -1,0 +1,27 @@
+Options +FollowSymlinks
+RewriteEngine On
+
+# deal with admin first
+RewriteCond %{REQUEST_URI} ^/music/(admins) 
+RewriteRule ^admins/assets/(.*)$ backend/web/assets/$1 [L]
+RewriteRule ^admins/css/(.*)$ backend/web/css/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^/music/backend/web/(assets|css)/
+RewriteCond %{REQUEST_URI} ^/music/(admins)
+RewriteRule ^.*$ backend/web/index.php [L]
+
+
+
+RewriteCond %{REQUEST_URI} ^/music/(assets|css)
+RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L]
+RewriteRule ^css/(.*)$ frontend/web/css/$1 [L]
+RewriteRule ^js/(.*)$ frontend/web/js/$1 [L] 
+RewriteRule ^images/(.*)$ frontend/web/images/$1 [L]
+
+RewriteCond %{REQUEST_URI} !^/music/(frontend|backend)/web/(assets|css)/
+RewriteCond %{REQUEST_URI} !index.php
+RewriteCond %{REQUEST_FILENAME} !-f [OR]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ frontend/web/index.php
+
+AddType image/svg+xml svg svgz
