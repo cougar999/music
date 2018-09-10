@@ -48,6 +48,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <tbody>
                 <?php if (isset($tracks) && count($tracks) > 0): ?>
                 <?php foreach ($tracks as $key => $value): ?>
+                    <?php if (isset($value['tracks']) && $value['tracks']->id > 0): ?>
                     <tr>
                         <th><?= $key+1 ?></th>
                         <td><a href="<?= base64_encode(base64_encode($value['tracks']->id.'-'.$value['tracks']->name)); ?>" title="<?= $value['tracks']->name ?>" data-trackid="<?= $value['tracks']->id ?>" target="_blank" class="songplaybtn d-block"><?= $value['tracks']->name ?></a></td>
@@ -63,6 +64,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                         </td>
                     </tr>
+                    <?php endif ?>
                 <?php endforeach ?>
                 <?php endif ?>
                 

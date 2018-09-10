@@ -105,7 +105,6 @@ class ProducerController extends Controller
                 return $element['source_id'];
             }));
         }
-
        
 
         if (isset($events) && count($events) > 0) {
@@ -148,7 +147,8 @@ class ProducerController extends Controller
                 return $element['source_id'];
             }));
         }
-        $query = Albums::find()->where(['id' => $album_ids, 'active' => 1])->with('aImages');
+        $query = Albums::find()->where(['albums.id' => $album_ids]);
+        $query->joinWith(['clicks'])->orderBy('counter.count DESC');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => [
@@ -173,6 +173,7 @@ class ProducerController extends Controller
             ],
         ]);
 
+
         // for popular songs
         $likes_count = Counter::find()->where(['type' => 'like', 'cate' => 'track', 'active' => 1])->with('tracks')->orderBy('count DESC')->limit(10)->all();
         //$likes_count = Counter::find()->where(['type' => 'like', 'cate' => 'track', 'active' => 1])->orderBy('count DESC')->limit(10)->all();
@@ -183,35 +184,9 @@ class ProducerController extends Controller
             }));
         }
 
+        $popular_songs = Tracks::find()->where([ 'tracks.id'=> $pop_songs ]);///->with('allSounds', 'clicks');
 
-
-        // $subQuery = (new Query())->select('*')->from('tracks')->where([ 'id'=> $pop_songs ])->rightJoin('counter', '`counter.source_id` = `tracks.id`')->all();
-
-        // var_dump($subQuery);die();
-
-        // SELECT `id`, (SELECT COUNT(*) FROM `user`) AS `count` FROM `post`
-        //$query = (new Query())->select(['count'])->from('counter')->where('');
-        //var_dump($subQuery);die();
-
-
-
-
-
-
-
-
-
-        $popular_songs = Tracks::find()->where([ 'tracks.id'=> $pop_songs ])->with('allSounds', 'clicks');
-
-        //$popular_songs->select(['clicks.count AS popClicks']);
-
-        // $popular_songs->select(['popClicks' => 'clicks.count']);
-
-        // //var_dump($popular_songs);die();
-
-        $popular_songs->joinWith(['clicks']);
-        $popular_songs->select("tracks.*, counter.*");
-        //var_dump($popular_songs->select("tracks.id, tracks.name, counter.id, counter.count"));
+        $popular_songs->joinWith(['clicks'])->orderBy('counter.count DESC');
 
         $pop_songs_Provider = new ActiveDataProvider([
             'query' => $popular_songs,
@@ -222,17 +197,6 @@ class ProducerController extends Controller
         ]);
 
 
-        $pop_songs_Provider->setSort([
-            'defaultOrder' => [
-                'counter.count' => SORT_DESC,
-            ],
-            'attributes' => [
-                'counter.count' => [
-                    'desc' => [ 'counter.count' => SORT_DESC ],
-                    'asc' => [ 'counter.count' => SORT_ASC ]
-                ],
-            ],
-        ]);
 
         // for most favorite  artists
         $counters_fav_artist = Counter::find()->where(['active' => 1, 'type' => 'like', 'cate' => 'artist'])->orderBy('count DESC')->limit(8)->all();

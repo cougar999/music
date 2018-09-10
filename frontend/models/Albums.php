@@ -82,4 +82,9 @@ class Albums extends \yii\db\ActiveRecord
         //id对应的是OrdersModel的id字段，order_id对应CustomerModel的order_id字段
         return $this->hasMany(Images::className(), ['source_id'=>'id'])->where(['type' => $type]);
     }
+
+    public function getClicks($type = 'like')
+    {
+        return $this->hasOne(Counter::className(), ['source_id'=>'id'])->where(['cate' => 'album']);
+    }
 }

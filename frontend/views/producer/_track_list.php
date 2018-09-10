@@ -7,7 +7,7 @@ use yii\helpers\StringHelper;
 
 
 <?php if(isset($model)): ?>
-    <?php var_dump($model['clicks']); ?>
+    <?php var_dump($model); ?>
     <tr>
         <td>
             <a href="<?= base64_encode(base64_encode($model->id.'-'.$model->name)); ?>" title="<?= $model->name ?>" data-trackid="<?= $model->id ?>" target="_blank" class="songplaybtn d-block"><?= $model->name ?></a>

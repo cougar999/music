@@ -95,4 +95,9 @@ class Tracks extends \yii\db\ActiveRecord
         return $this->hasOne(Counter::className(), ['source_id'=>'id'])->where(['type' => $type, 'cate' => 'track']);
     }
 
+    public function getUserProfile()
+    {
+        return $this->hasOne(User::className(), ['id'=>'source_id']);
+    }
+
 }
