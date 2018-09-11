@@ -185,7 +185,6 @@ class ProducerController extends Controller
         }
 
         $popular_songs = Tracks::find()->where([ 'tracks.id'=> $pop_songs ]);///->with('allSounds', 'clicks');
-
         $popular_songs->joinWith(['clicks'])->orderBy('counter.count DESC');
 
         $pop_songs_Provider = new ActiveDataProvider([
@@ -195,7 +194,6 @@ class ProducerController extends Controller
             ],
 
         ]);
-
 
 
         // for most favorite  artists

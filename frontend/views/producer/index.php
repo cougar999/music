@@ -6,6 +6,7 @@ use yii\helpers\Url;
 use yii\helpers\StringHelper;
 /* @var $this yii\web\View */
 use common\components\Helpers;
+use frontend\models\User;
 $helpers = new helpers;
 $avatar = $helpers->getAvatar();
 
@@ -118,7 +119,19 @@ $profile = isset($artist['profile']) ? $artist['profile'] : [];
 					                'itemOptions' => [
 					                    'class' => 'item'
 					                ],
-					                'itemView' => '_track_list',
+					                'itemView' =>  function ($model, $key, $index, $widget) {
+					                	$user = User::find()->where(['id' => $model->created_user])->one();
+					                	$num = $index + 1;
+					                	$baseUrl = Url::base();
+		                                $html = '<tr>';
+		                                $html .= '<td><a href="'.$baseUrl.'/site/album-view?id='.$model->album_id.'" title="'.$model->name.'" class="d-block">' .'#' .$num.'. '.$model->name. ' - by '.$user->username. '</a></td>';
+		                                $html .= '<td><i class="fa fa-heart"></i>  <span class="small">'.$model['clicks']['count'].'</span></td>';
+		                                $html .= '<td class="text-right"><a href="' .base64_encode(base64_encode($model->id.'-'.$model->name)).'" title="'.$model->name.'" data-trackid="'.$model->id.'" target="_blank" class="song2playlist"><span class="fas fa-plus"></span></a>  &nbsp; <a href="' .base64_encode(base64_encode($model->id.'-'.$model->name)).'" title="'.$model->name.'" data-trackid="'. $model->id.'" target="_blank" class="songplaybtn"><span class="far fa-play-circle"></span></a>  &nbsp;</td>';
+		                                $html .= '</tr>';
+
+		                                return $html;
+					                },
+					                //'itemView' => '_track_list',
 					                'viewParams' => [
 					                    'baseurl' => Url::home(),
 					                ],
