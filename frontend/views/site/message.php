@@ -32,8 +32,11 @@ $baseUrl = Url::base();
 							        <div class="media-body">
 							            <h5 class="mt-0 mb-1 font-weight-bold">
 							            	<?= $value['checked'] != 1 ? '<span class="badge red">NEW</span>' : ''; ?>
-							            	<?= $value['title'] ?>
-							            		
+							            	<?= $value['title'] ?> 
+							            	
+							            	From - 
+							            	<a href="<?= $baseUrl ?>/site/artist-bio?artist_id=<?= $value['user']['id'] ?>" class="blue-text"><?= $value['user']['username']; ?></a>
+							            	
 							            	<span class="float-right">
 							            		<a href="#<?= $value['id']?>" class="readMessage mr-2" msgid="<?= $value['id']?>" title="Mark as read"><i class="far fa-check-circle"></i></a> 
 							            		<a href="#<?= $value['id']?>" class="removeMessage" msgid="<?= $value['id']?>" title="Remove this message"><i class="far fa-trash-alt"></i></a>

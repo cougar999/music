@@ -466,13 +466,20 @@ class SiteController extends Controller
 
     public function actionMessage()
     {
-        $userid = Yii::$app->user->identity->id ? Yii::$app->user->identity->id : 0;
+        //$userid = Yii::$app->user->identity->id ? Yii::$app->user->identity->id : 0;
 
         $sender = new MessageManager;
         $messageList = $sender->myMessageList();
         //$news = $sender->newMessageCount();
         //$receive = $sender->receive();
-        // var_dump($messageList);
+        
+        if (isset($messageList['list']) && count($messageList['list']) >0) {
+            foreach ($messageList['list'] as $key => $value) {
+                $messageList['list'][$key]['user'] = User::find()->where(['id' => $value['producer']])->with('userProfile', 'userPhoto')->one();
+            }
+        }
+
+        var_dump($messageList);
         return $this->render('message', ['messageList' => $messageList]);
     }
 

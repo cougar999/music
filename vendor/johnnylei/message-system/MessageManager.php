@@ -122,10 +122,13 @@ class MessageManager extends Component
             't1.*',
             't2.checked',
             't2.checked_time',
-            't2.id primary_id'
+            't2.id primary_id',
+            't2.producer',
         ])->alias('t1')
             ->leftJoin(BaseRecord::MessageUserMap. ' t2', 't1.id = t2.message_id')
             ->andWhere(['t2.user_id'=>Yii::$app->getUser()->getId()]);
+
+
 
         if(!empty($this->pagination)) {
             $pagination = Yii::createObject($this->pagination);
